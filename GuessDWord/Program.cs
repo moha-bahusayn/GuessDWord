@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GuessDWord
 {
-    
+
     class Program
     {
         // The Array that contains the premade list of words.
@@ -15,7 +15,7 @@ namespace GuessDWord
         static string[] listOfInput = new string[] { "1", "easy", "2", "normal", "3", "hard" };
         static string[] listOfLevels = new string[] { "easy", "normal", "hard" };
         static int[] listOfAttempts = new int[] { 10, 5, 3 };
-        
+
         //This is the main function to start the program.
         static void Main(string[] args)
         {
@@ -30,7 +30,8 @@ namespace GuessDWord
                 RunGame(level, attempt);
             } while (ToReset());
         }
-        
+
+        //The following function is to show the main screen with no input.
         public static void InitiateGame()
         {
             Console.WriteLine("###### ========================= ######");
@@ -38,9 +39,10 @@ namespace GuessDWord
             Console.WriteLine("###### ========================= ######");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine(""); 
+            Console.WriteLine("");
         }
 
+        //The following function is to set the level of the game.
         public static string ChooseDiff()
         {
             string diffInput;
@@ -75,9 +77,10 @@ namespace GuessDWord
                 }
                 return selectedLevel;
             } while (!ValidateInput(diffInput, listOfInput));
-            
+
         }
 
+        //The following function is to set the attempts counter in case of a wrong guess.
         public static int AttemptsCounter(string level)
         {
             int attempt = 0;
@@ -98,7 +101,7 @@ namespace GuessDWord
             return attempt;
         }
 
-
+        //The following function is to start the game with the selected level.
         public static void RunGame(string lvl, int attempts)
         {
             Console.Clear();
@@ -118,12 +121,12 @@ namespace GuessDWord
                 wordLength++;
             }
 
-            
+
             Console.WriteLine("The random word has: '{0}' characters.Let's Start!", wordLength);
             int attemptsCounter = 0;
             int attemptsLeft = attempts - attemptsCounter;
             string charInput = "";
-            
+
 
             /* ===================================================== */
             //DEBUG
@@ -143,7 +146,7 @@ namespace GuessDWord
                         starRandom = ReplaceLetter(charInput, randomWord, starRandom);
                         if (starRandom == randomWord)
                         {
-                            ResultStats(randomWord, attemptsCounter);
+                            Congrats(randomWord, attemptsCounter);
                             break;
                         }
                         else
@@ -186,7 +189,7 @@ namespace GuessDWord
             } while (attemptsLeft > 0);
         }
 
-        
+
         //The following function is to validate any input whether includes in an array or not.
         public static bool ValidateInput(string input, string[] listOfValidInput)
         {
@@ -197,37 +200,37 @@ namespace GuessDWord
             return false;
         }
 
+        //The following function is to set a random word.
         public static string RandomWordPicker(string[] listOfWords)
         {
-            //Pick a random word.
+           
             Random rand = new Random();
             String selectedWord = listOfWords[rand.Next(listOfWords.Length)];
             return selectedWord;
         }
 
+        //The following function is to validate the input is a single character.
         public static bool IsValidChar(string a)
         {
-            if (a.Length == 1) {return true;}
-            //else
+            if (a.Length == 1) { return true; }
             return false;
         }
 
+        //The following function is to validate the input is a valid letter.
         public static bool IsValidLetter(string letter, string word, string starLetter)
         {
-                foreach(char y in word)
-                {
-                    if (y.ToString() == letter)
-                    {
-                        return true;
-                    }
-                }
+            foreach (char y in word)
+            {
+                if (y.ToString() == letter) { return true; }
+            }
             return false;
         }
 
+        //The following function is to replace * with the valid guessed letter.
         private static string ReplaceLetter(string letter, string word, string stars)
         {
-            string newStar="";
-            for (int i = 0; i<word.Length; i++)
+            string newStar = "";
+            for (int i = 0; i < word.Length; i++)
             {
                 if (word[i].ToString() == letter)
                 {
@@ -249,13 +252,15 @@ namespace GuessDWord
             return newStar;
         }
 
-        private static void ResultStats(string word, int counter)
+        //The following function is to finish the game with a win.
+        private static void Congrats(string word, int counter)
         {
             Console.WriteLine("Congratulations! you have won!");
             Console.WriteLine("");
             Console.WriteLine("You have guessed the word # '{0}' # with '{1}'mistakes.", word.ToUpper(), counter);
         }
 
+        //The following function is to finish the game with a lose.
         private static void GameOver(string word, int counter)
         {
             Console.WriteLine("Hard Luck! You lost the round!");
@@ -263,6 +268,7 @@ namespace GuessDWord
             Console.WriteLine("The word is: '{0}'. You have tried with '{1}' mistakes.", word.ToUpper(), counter);
         }
 
+        //The following function is to reset the game to default.
         private static bool ToReset()
         {
             Console.WriteLine("That's the End! Do you want to start Over? Y/N");
