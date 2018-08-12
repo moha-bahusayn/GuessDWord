@@ -104,8 +104,9 @@ namespace GuessDWord
             Console.Clear();
             string randomWord = RandomWordPicker(listOfWords);
 
+            /* ===================================================== */
             //DEBUG
-            Console.WriteLine("The random word is: " + randomWord);
+            Console.WriteLine("The random word is: '{0}'", randomWord);
             Console.ReadLine();
             /* ===================================================== */
 
@@ -117,8 +118,9 @@ namespace GuessDWord
                 wordLength++;
             }
 
-            Console.WriteLine("The random word has: "+wordLength+" characters.Let's Start!");
+            Console.WriteLine("The random word has: '{0}' characters.Let's Start!", wordLength);
             int attemptsCounter = 0;
+            int attemptsLeft = attempts - attemptsCounter;
             string charInput = "";
             do
             {
@@ -126,13 +128,11 @@ namespace GuessDWord
                 charInput = Console.ReadLine().ToLower();
                 if (IsValidChar(charInput))
                 {
-                    string validInput = charInput;
-                    if (IsValidLetter(validInput, randomWord))
+                    if (IsValidLetter(charInput, randomWord))
                     {
-                        string validLetter = validInput;
-                        Console.WriteLine("Correct!. The letter || " + validLetter.ToUpper() + " || is in the random word.");
+                        Console.WriteLine("Correct!. The letter || '{0}' || is in the random word.", charInput.ToUpper());
 
-                        ReplaceLetter(validLetter,randomWord, starRandom);
+                        ReplaceLetter(charInput,randomWord, starRandom);
                         
                         if (randomWord == starRandom)
                         {
@@ -156,25 +156,24 @@ namespace GuessDWord
                     else
                     {
                         attemptsCounter++;
-                        if (attemptsCounter > attempts)
+                        if (attemptsLeft == 0)
                         {
                             GameOver(randomWord, attemptsCounter);
                         }
-                        Console.WriteLine("Oops! That's a wrong guess. Please try again.");
-
-                        Console.WriteLine("Please Try Again to enter a letter. you have "
-                                          + (attempts - attemptsCounter) + " attempts left.");
-
-                        charInput = Console.ReadLine().ToLower();
-
+                        else
+                        {
+                            Console.WriteLine("Oops! That's a wrong guess. you have '{0}' attempts left.", attemptsLeft);
+                            Console.WriteLine("Please Try Again to enter a letter.");
+                            charInput = Console.ReadLine().ToLower();
+                        }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Please re-enter a single letter ONLY.");
+                    Console.WriteLine("That's an invalid input.Please re-enter a single letter ONLY.");
                     charInput = Console.ReadLine().ToLower();
                 }
-            } while (!IsValidChar(charInput));
+            } while (attemptsLeft > 0);
         }
 
         
@@ -217,10 +216,13 @@ namespace GuessDWord
             return false;
         }
 
-        private static void ReplaceLetter(string validLetter, string randomWord, string starRandom)
+        private static void ReplaceLetter(string letter, string word, string starLetter)
         {
+            /* ===================================================== */
             /*for each letter in randomword, if string a == letter, replace the (*) with string a, and type Good!. if Not, failed attempt is recorded.*/
             //Replace the star (*) with the validLetter in here and save it in starRandom variable.
+            //return starLetter
+            /* ===================================================== */
         }
 
 
@@ -228,14 +230,14 @@ namespace GuessDWord
         {
             Console.WriteLine("Congratulations! you have won!");
             Console.WriteLine("");
-            Console.WriteLine("You have guessed the word" + word.ToUpper() + "with " + counter + " mistakes.");
+            Console.WriteLine("You have guessed the word '{0}' with '{1}'mistakes.", word.ToUpper(), counter);
         }
 
         private static void GameOver(string word, int counter)
         {
             Console.WriteLine("Hard Luck! You lost the round!");
             Console.WriteLine("");
-            Console.WriteLine("The word is: " + word.ToUpper() + ". You have tried with " + counter + " mistakes.");
+            Console.WriteLine("The word is: '{0}'. You have tried with '{1}' mistakes.", word.ToUpper(), counter);
         }
 
         private static bool ToReset()
