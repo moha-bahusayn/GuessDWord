@@ -118,16 +118,12 @@ namespace GuessDWord
                 wordLength++;
             }
 
-            /* ===================================================== */
-            //DEBUG
-            Console.WriteLine("The star word is: '{0}'", starRandom);
-            Console.ReadLine();
-            /* ===================================================== */
-
+            
             Console.WriteLine("The random word has: '{0}' characters.Let's Start!", wordLength);
             int attemptsCounter = 0;
             int attemptsLeft = attempts - attemptsCounter;
             string charInput = "";
+            
 
             /* ===================================================== */
             //DEBUG
@@ -135,10 +131,10 @@ namespace GuessDWord
             Console.ReadLine();
             /* ===================================================== */
 
+            Console.WriteLine("Enter a single character.");
+            charInput = Console.ReadLine().ToLower();
             do
             {
-                Console.WriteLine("Enter a single character.");
-                charInput = Console.ReadLine().ToLower();
                 if (IsValidChar(charInput))
                 {
                     if (IsValidLetter(charInput, randomWord, starRandom))
@@ -148,16 +144,18 @@ namespace GuessDWord
                         if (starRandom == randomWord)
                         {
                             ResultStats(randomWord, attemptsCounter);
+                            break;
                         }
                         else
                         {
 
                             Console.WriteLine("Let's Continue. Shall We?");
-                            Console.ReadLine();
                             Console.WriteLine("The Status: ");
                             Console.WriteLine("============");
                             Console.WriteLine(starRandom);
                             Console.WriteLine("============");
+                            Console.WriteLine("Level:'{0}'", lvl);
+                            Console.WriteLine("'{0}' / '{1}' Lives", attemptsLeft, attempts);
                             Console.WriteLine("Great! Enter a single letter again to complete the word!");
                         }
                     }
@@ -165,17 +163,10 @@ namespace GuessDWord
                     {
                         attemptsCounter++;
                         attemptsLeft--;
-                        /* ===================================================== */
-                        //DEBUG
-                        Console.WriteLine("Mistakes Counter: '{0}'", attemptsCounter);
-                        Console.ReadLine();
-                        Console.WriteLine("Attempts Left: '{0}'", attemptsLeft);
-                        Console.ReadLine();
-                        /* ===================================================== */
-
                         if (attemptsLeft == 0)
                         {
                             GameOver(randomWord, attemptsCounter);
+                            break;
                         }
                         else
                         {
@@ -188,6 +179,10 @@ namespace GuessDWord
                     Console.WriteLine("That's an invalid input.Please re-enter a single letter ONLY.");
                     charInput = Console.ReadLine().ToLower();
                 }
+                //In here, needs to add lines of code to continue adding valid inputs in order to keep the value of 
+                //the new word compiled of stars and corrected-guess letters.\
+                Console.WriteLine("Enter a single character.");
+                charInput = Console.ReadLine().ToLower();
             } while (attemptsLeft > 0);
         }
 
@@ -235,26 +230,22 @@ namespace GuessDWord
             for (int i = 0; i<word.Length; i++)
             {
                 if (word[i].ToString() == letter)
-                    {
+                {
+
                     newStar += word[i];
-                    }
-                else if (newStar.Length == 0)
-                {
-                    newStar += "*";
-                 }
-                else if (newStar[i] != word[i])
-                {
-                    newStar += "*";
                 }
                 else
                 {
-                    newStar += "*";
+                    if (stars[i].ToString() == "*")
+                    {
+                        newStar += "*";
+                    }
+                    else
+                    {
+                        newStar += stars[i];
+                    }
                 }
-               
             }
-
-            //stars = newStar;
-            Console.WriteLine("new Star '{0}'", newStar);
             return newStar;
         }
 
