@@ -180,7 +180,6 @@ namespace GuessDWord
                 else
                 {
                     Console.WriteLine("That's an invalid input.Please re-enter a single letter ONLY.");
-                    charInput = Console.ReadLine().ToLower();
                 }
                 //In here, needs to add lines of code to continue adding valid inputs in order to keep the value of 
                 //the new word compiled of stars and corrected-guess letters.\
@@ -273,7 +272,7 @@ namespace GuessDWord
         {
             Console.WriteLine("That's the End! Do you want to start Over? Y/N");
             string a = Console.ReadLine().ToLower();
-            if (a == "y") { return true; }
+            if (a == "y") { Console.Clear();  return true; }
             return false;
         }
 
